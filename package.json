@@ -1,0 +1,46 @@
+{
+  "name": "stellar-batch-payment-monorepo",
+  "version": "1.0.0",
+  "description": "Monorepo para backend (Express/TypeScript), frontend (NextJS) y contratos (Soroban)",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend",
+    "contract"
+  ],
+  "scripts": {
+    "install:all": "npm install && npm run install:contract",
+    "install:contract": "cd contract && cargo build",
+    
+    "dev:backend": "npm run dev --workspace=backend",
+    "dev:frontend": "npm run dev --workspace=frontend",
+    "dev:contract": "cd contract && cargo run",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:all": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\" \"npm run dev:contract\"",
+    
+    "build:backend": "npm run build --workspace=backend",
+    "build:frontend": "npm run build --workspace=frontend",
+    "build:contract": "cd contract && cargo build --release",
+    "build": "npm run build:backend && npm run build:frontend",
+    "build:all": "npm run build && npm run build:contract",
+    
+    "start:backend": "npm run start --workspace=backend",
+    "start:frontend": "npm run start --workspace=frontend",
+    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+    
+    "test:backend": "npm run test --workspace=backend",
+    "test:frontend": "npm run test --workspace=frontend",
+    "test:contract": "cd contract && cargo test",
+    "test": "npm run test:backend && npm run test:frontend",
+    "test:all": "npm run test && npm run test:contract",
+    
+    "clean": "rimraf node_modules && npm run clean:backend && npm run clean:frontend && npm run clean:contract",
+    "clean:backend": "npm run clean --workspace=backend",
+    "clean:frontend": "rimraf frontend/node_modules frontend/.next",
+    "clean:contract": "cd contract && cargo clean"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "rimraf": "^5.0.5"
+  }
+}
